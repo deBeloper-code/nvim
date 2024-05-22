@@ -56,6 +56,21 @@ return {
 			},
 			sections = {
 				lualine_x = {
+					function()
+						local ok, pomo = pcall(require, "pomo")
+						if not ok then
+							return ""
+						end
+
+						local timer = pomo.get_first_to_finish()
+						if timer == nil then
+							return ""
+						end
+
+						local remaining_seconds = pomo.get_timer(timer.id):time_remaining()
+						local seconds = math.floor(remaining_seconds % 60)
+						return "󰄉 " .. tostring(timer) .. " " .. tostring(seconds) .. "s"
+					end,
 					{
 						lazy_status.updates,
 						cond = lazy_status.has_updates,
